@@ -13,7 +13,14 @@
 /* Messages */
 enum message_type
 {
-    NULL_TYPE, MASTER_JOBS, MASTER_DONE, MASTER_ERROR, WORKER_REQUEST, WORKER_RESULT, WORKER_ERROR, WORKER_DONE
+    NULL_TYPE,
+    MASTER_JOBS,
+    MASTER_DONE,
+    MASTER_ERROR,
+    WORKER_REQUEST,
+    WORKER_RESULT,
+    WORKER_ERROR,
+    WORKER_DONE
 };
 
 struct message
@@ -79,7 +86,8 @@ struct result_message
 
 /* Prototypes */
 unsigned char *get_next_result(unsigned char *current);
-enum error_code add_result(unsigned char *message, unsigned char **pEnd, struct base_job_message *pJob);
+enum error_code add_result(unsigned char *message, unsigned char **pEnd,
+        struct base_job_message *pJob);
 
 unsigned char *get_next_job(unsigned char *current);
 enum error_code add_job(unsigned char *message, unsigned char **pEnd, struct base_job *job);

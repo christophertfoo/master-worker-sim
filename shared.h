@@ -11,7 +11,8 @@
 #define true  1
 #define false 0
 
-enum error_code {
+enum error_code
+{
     NO_ERROR = 0,
     BAD_ARGUMENT,
     MEMORY_ERROR,

@@ -193,8 +193,10 @@ enum error_code run_worker(int rank)
             }
 
             /* Else if message was sent and need to send a message, send the message */
-            else if ((!sending && queued) || (sending && MPI_Test(&requests[SEND_REQUEST], &flag, &mpi_status) == MPI_SUCCESS
-                    && flag))
+            else if ((!sending && queued)
+                    || (sending
+                            && MPI_Test(&requests[SEND_REQUEST], &flag, &mpi_status) == MPI_SUCCESS
+                            && flag))
             {
                 if (queued)
                 {
