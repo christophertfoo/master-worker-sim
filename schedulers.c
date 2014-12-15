@@ -95,8 +95,10 @@ enum error_code static_job_scheduler(struct static_job_args *args)
         JOBS_MESSAGE(args->pMessage)->num_jobs = 0;
         args->message_size = 0;
 
+        /* Calculate a number of jobs that will evenly divide the entire list of jobs */
         num_jobs = (int) ceil(args->pList->num_jobs / (double) args->num_workers);
 
+        /* Assign the jobs */
         for (i = 0; i < num_jobs && status == NO_ERROR; i++)
         {
             pJob = get_next_job_list(args->pList);
@@ -143,6 +145,7 @@ enum error_code init_dynamic_job_args(struct dynamic_job_args *args, struct job_
         num_jobs = args->pList->num_jobs;
         pNextCount = &args->counts;
 
+        /* Calculate the number of jobs that should be given out at each request */
         while (num_jobs > 0 && status == NO_ERROR)
         {
             count = ceil(num_jobs / 2.0 / num_workers);
@@ -150,6 +153,8 @@ enum error_code init_dynamic_job_args(struct dynamic_job_args *args, struct job_
             {
                 count = 1;
             }
+
+            /* Add that count to the linked list of job counts, accounting for the cases where we might run out of jobs prematurely */
             for (i = 0; i < num_workers && num_jobs > 0 && status == NO_ERROR; i++)
             {
                 newCount = (struct dynamic_job_count *) malloc(sizeof(struct dynamic_job_count));
@@ -193,8 +198,13 @@ enum error_code dynamic_job_scheduler(struct dynamic_job_args *args)
         JOBS_MESSAGE(args->pMessage)->num_jobs = 0;
         args->message_size = 0;
 
+        /* Grab the next count node in the linked list */
         count = args->counts;
+
+        /* Move the head of the list over to the next node */
         args->counts = args->counts->next;
+
+        /* Assign the jobs */
         for (i = 0; i < count->count && status == NO_ERROR; i++)
         {
             pJob = get_next_job_list(args->pList);
@@ -219,6 +229,8 @@ enum error_code dynamic_job_scheduler(struct dynamic_job_args *args)
         {
             args->message_size = pEnd - args->pMessage;
         }
+
+        /* Destroy the retrieved count node */
         free(count);
     }
 

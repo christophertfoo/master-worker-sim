@@ -10,6 +10,6 @@
 
 #define MASTER_RANK      0
 
-#define MAX_MESSAGE_SIZE 5.243e+7 /* 50 MB */
+#define MAX_MESSAGE_SIZE 104857600 /* 100 MB */
 
 #endif /* CONFIG_H_ */
